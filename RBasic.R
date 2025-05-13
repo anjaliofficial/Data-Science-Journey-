@@ -25,10 +25,29 @@ draw
 #Odd and even are mutually exclusive outcomes in a single roll.
 
 
-roll = sample(1:6, 1)
+roll = sample(1:6, 3) #This line simulates rolling a six-sided die once.
+#sample(1:6, 1) randomly selects one number from the set {1, 2, 3, 4, 5, 6}.
+
 if(roll%%2 == 0){
   cat ("Even number:" , roll)
   }else {
     cat ("Odd number: ", roll)
   
+  }
+
+roll = sample(1:6, 3)
+
+for (r in roll) {
+  if (r %% 2 == 0) {
+    cat("Even number:", r, "\n")
+  } else {
+    cat("Odd number:", r, "\n")
+  }
 }
+
+
+# Equallly likely event 
+# rollinfg a die 1000 times 
+
+rolls= sample (1:6, 1000, replace = TRUE)
+table(rolls)
