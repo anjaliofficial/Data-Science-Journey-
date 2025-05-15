@@ -34,13 +34,14 @@ ggplot(sportsdata, aes(x = `Car.Make`, fill = factor(year))) +
 
 
 #2. Importing data from a URL -------------------
-
 library(tidyverse)
-url = "https://raw.githubusercontent.com/fivethirtyeight/data/refs/heads/master/unisex-names/aging_curve.csv"
-namesdata = read_csv(url)
 
-namesdata
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/unisex-names/aging_curve.csv"
+namesdata <- read_csv(url)
 
-#We can then use the arrange() function in dplyr to see which names have the make and female share almost the same.
+# Calculate gap between male and female percentages
+namesdata <- namesdata %>%
+  mutate(gap = abs(male_perct - female_perct))
 
+# View data with names sorted by smallest gender gap
 View(arrange(namesdata, gap))
