@@ -79,3 +79,25 @@ arrange(flights, desc(arr_delay)) # descending order
 # mutate() to create new columns 
 # filter() to select rows by some criterion 
 # arrange() to sort the rows
+
+
+
+
+
+# Extracting Rows
+
+rename(flights, destination=dest, tail_num=tailnum) 
+View(flights)
+dim(flights)
+
+
+
+# -------------------Add new columns (variables)
+# Mutate le new column add garchha ra agadi ko kunai column ko data lina parchha 
+flights = mutate(flights, gain=arr_delay - dep_delay, speed=distance/(air_time/60)) 
+# jun data set ho tei name ko variable banauna parchha
+View(flights)
+
+dim(flights)
+
+
