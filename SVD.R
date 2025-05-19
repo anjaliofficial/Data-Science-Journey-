@@ -52,3 +52,80 @@ reconstructed_M <- M %*% M_plus %*% M
 print("Check M * M+ * M:")
 print(round(reconstructed_M, 6))
 
+install.packages('jpeg')
+install.packages('pracma')
+
+
+library(jpeg) #For image reading 
+library(pracma) # for SVD and matrix ops
+library(ggplot2)
+# -----------------------------------------
+# PART 1: Pseudo-inverse of Matrix X
+# -----------------------------------------
+
+x = matrix(c(3, 3, 2, 2, 3, -2), nrow = 2, byrow = TRUE)
+print("Original matrix X:")
+print(x)
+
+svd_result = svd(x)
+U = svd_result$u
+sigma = svd_result$d
+V = svd_result$v
+
+print("U:")
+print(U)
+print("Singular Values:")
+print(sigma)
+print("V^T:")
+print(t(V))
+
+# Inverse of sigma
+sigma_inverse = diag(1 / sigma, nrow = length(sigma))
+
+# Add padding for shape match: create full inverse Sigma matrix (3x2)
+sigma_full = matrix(0, nrow = ncol(x), ncol = nrow(x))  # 3x2
+sigma_full[1:length(sigma), 1:length(sigma)] = sigma_inverse
+
+# Compute Pseudo-inverse: X+ = V * Sigma_inv * U^T
+
+# Compute pseudo-inverse: only use first 2 columns of V
+M = V[, 1:2] %*% sigma_inverse %*% t(U)
+
+print("Pseudo-inverse of X:")
+print(round(M, 6))
+
+
+# -----------------------------------------
+# PART 2: Image Compression using SVD
+# -----------------------------------------
+
+# Load required libraries
+if (!require("jpeg")) install.packages("jpeg")
+library(jpeg)
+
+# Load R logo image
+img_path = system.file("img", "Rlogo.jpg", package = "jpeg")
+cat_img = readJPEG(img_path)
+
+# Convert to grayscale
+gray_cat = 0.2989 * cat_img[,,1] + 0.5870 * cat_img[,,2] + 0.1140 * cat_img[,,3]
+
+# SVD on grayscale image
+svd_cat = svd(gray_cat)
+U = svd_cat$u
+sigma = svd_cat$d
+V = svd_cat$v
+
+# Plot compressed images with different ranks
+ranks = c(5, 10, 70, 100, 200)
+par(mfrow = c(5, 2), mar = c(2, 2, 2, 2))
+
+for (r in ranks) {
+  approx_cat = U[, 1:r] %*% diag(sigma[1:r]) %*% t(V[, 1:r])
+  
+  image(t(apply(approx_cat, 2, rev)), col = gray.colors(256),
+        main = paste("Compressed Image (k =", r, ")"), axes = FALSE)
+  
+  image(t(apply(gray_cat, 2, rev)), col = gray.colors(256),
+        main = "Original Image", axes = FALSE)
+}
