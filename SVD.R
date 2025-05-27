@@ -52,80 +52,94 @@ reconstructed_M <- M %*% M_plus %*% M
 print("Check M * M+ * M:")
 print(round(reconstructed_M, 6))
 
+
+
+
+#-------------------------------------------------------------------------------------
+# Install required packages (only needed once)
 install.packages('jpeg')
 install.packages('pracma')
 
+# Load libraries
+library(jpeg)     # For reading JPEG images
+library(pracma)   # For numerical operations like SVD
+library(ggplot2)  # For plotting (not used here but often useful)
 
-library(jpeg) #For image reading 
-library(pracma) # for SVD and matrix ops
-library(ggplot2)
 # -----------------------------------------
 # PART 1: Pseudo-inverse of Matrix X
 # -----------------------------------------
 
+# Define a 2x3 matrix
 x = matrix(c(3, 3, 2, 2, 3, -2), nrow = 2, byrow = TRUE)
 print("Original matrix X:")
 print(x)
 
+# Perform SVD on matrix x
 svd_result = svd(x)
-U = svd_result$u
-sigma = svd_result$d
-V = svd_result$v
+U = svd_result$u            # Left singular vectors (2x2)
+sigma = svd_result$d        # Singular values (vector of length 2)
+V = svd_result$v            # Right singular vectors (3x3)
 
+# Show components
 print("U:")
 print(U)
 print("Singular Values:")
 print(sigma)
-print("V^T:")
+print("V^T:")               # t(V) gives the transpose of V
 print(t(V))
 
-# Inverse of sigma
-sigma_inverse = diag(1 / sigma, nrow = length(sigma))
+# Create diagonal matrix with reciprocal of singular values
+sigma_inverse = diag(1 / sigma, nrow = length(sigma))  # diag() creates a diagonal matrix
 
-# Add padding for shape match: create full inverse Sigma matrix (3x2)
-sigma_full = matrix(0, nrow = ncol(x), ncol = nrow(x))  # 3x2
-sigma_full[1:length(sigma), 1:length(sigma)] = sigma_inverse
-
-# Compute Pseudo-inverse: X+ = V * Sigma_inv * U^T
-
-# Compute pseudo-inverse: only use first 2 columns of V
+# Pseudo-inverse: Use only first 2 columns of V to match dimensions
+# Matrix multiplication: V[, 1:2] selects the first 2 columns (from 3x3 V) to make it 3x2
+# t(U) is the transpose of U (2x2 becomes 2x2), making the shapes match for multiplication
 M = V[, 1:2] %*% sigma_inverse %*% t(U)
 
 print("Pseudo-inverse of X:")
-print(round(M, 6))
+print(round(M, 6))   # round() limits decimal precision for cleaner output
 
 
 # -----------------------------------------
 # PART 2: Image Compression using SVD
 # -----------------------------------------
 
-# Load required libraries
-if (!require("jpeg")) install.packages("jpeg")
-library(jpeg)
-
-# Load R logo image
+# Load JPEG image (R logo)
 img_path = system.file("img", "Rlogo.jpg", package = "jpeg")
-cat_img = readJPEG(img_path)
+cat_img = readJPEG(img_path)  # Reads JPEG into a 3D array (rows x cols x 3 color channels)
 
-# Convert to grayscale
-gray_cat = 0.2989 * cat_img[,,1] + 0.5870 * cat_img[,,2] + 0.1140 * cat_img[,,3]
+# Convert RGB image to grayscale using standard luminance formula
+gray_cat = 0.2989 * cat_img[,,1] +   # Red channel
+  0.5870 * cat_img[,,2] +   # Green channel
+  0.1140 * cat_img[,,3]     # Blue channel
 
-# SVD on grayscale image
+# Apply SVD to the grayscale image matrix
 svd_cat = svd(gray_cat)
-U = svd_cat$u
-sigma = svd_cat$d
-V = svd_cat$v
+U = svd_cat$u                        # Left singular vectors
+sigma = svd_cat$d                   # Singular values
+V = svd_cat$v                        # Right singular vectors
 
-# Plot compressed images with different ranks
+# Prepare to plot images in a 5x2 layout (mfrow = rows, cols)
+par(mfrow = c(5, 2), mar = c(2, 2, 2, 2))  # mar = margin sizes for plots
+
+# Try compressing with different ranks (i.e., how many singular values to keep)
 ranks = c(5, 10, 70, 100, 200)
-par(mfrow = c(5, 2), mar = c(2, 2, 2, 2))
 
 for (r in ranks) {
+  # diag(sigma[1:r]) creates an r x r diagonal matrix with top-r singular values
+  # U[, 1:r] = first r columns of U
+  # V[, 1:r] = first r columns of V
+  # %*% = matrix multiplication
   approx_cat = U[, 1:r] %*% diag(sigma[1:r]) %*% t(V[, 1:r])
   
-  image(t(apply(approx_cat, 2, rev)), col = gray.colors(256),
-        main = paste("Compressed Image (k =", r, ")"), axes = FALSE)
+  # Display the compressed image
+  # apply(..., 2, rev) = flips the matrix vertically (required for correct orientation in image plot)
+  # t(...) = transpose matrix so it shows correctly in R's coordinate system
+  image(t(apply(approx_cat, 2, rev)), col = gray.colors(256),  # gray.colors = grayscale palette
+        main = paste("Compressed Image (k =", r, ")"),         # main = title
+        axes = FALSE)                                          # axes = FALSE hides the axis ticks
   
+  # Show original image next to compressed version
   image(t(apply(gray_cat, 2, rev)), col = gray.colors(256),
         main = "Original Image", axes = FALSE)
 }
