@@ -45,3 +45,53 @@ plot(samples,
      )
 
 
+# ===============================
+# 3D Multivariate Normal Sampling
+# ===============================
+
+# Step 1: Define the mean and covariance
+mu3 = c(1, 2, 3)
+sigma3 = matrix(c(1, 0.5, 0.3,
+                  0.5, 1, 0.4,
+                  0.3, 0.4, 1), nrow = 3, byrow = TRUE)
+
+# Step 2: Cholesky decomposition (Upper triangular L such that sigma = L'L)
+L3 = chol(sigma3)
+
+# Step 3: Generate 1000 standard normal samples (uncorrelated)
+set.seed(42)
+n = 1000  # Correct variable name, replacing incorrect 'b'
+Z3 = matrix(rnorm(n * 3), ncol = 3)
+
+# Step 4: Apply Cholesky transformation and add mean
+samples3 = Z3 %*% t(L3) + matrix(mu3, n, 3, byrow = TRUE)
+
+# Step 5: 3D Plot using scatterplot3d
+if (!require("scatterplot3d")) install.packages("scatterplot3d")
+library(scatterplot3d)
+
+scatterplot3d(samples3, pch = 16, color = "blue", main = "3D Multivariate Normal")
+
+# ===============================
+# Ridge Regression Using Cholesky
+# ===============================
+
+# Step 1: Simulate input data
+set.seed(101)
+X = matrix(rnorm(100 * 10), 100, 10)  # 100 observations, 10 features
+y = rnorm(100)                        # Target variable
+
+# Step 2: Ridge Regression setup
+lambda = 1  # Regularization parameter
+
+# Step 3: Create XtX + λI and Xᵗy
+XtX = t(X) %*% X + lambda * diag(ncol(X))
+Xty = t(X) %*% y
+
+# Step 4: Solve using Cholesky
+L = chol(XtX)  
+z = forwardsolve(t(L), Xty)
+beta_ridge = backsolve(L, z)
+
+# Step 5: Output coefficients
+print(beta_ridge)
