@@ -21,10 +21,18 @@ merge(x,y,by.x, all,all.x, all.y) # x jaile pani left ma join garirako data hunc
 # Types of JOIN in R 
 # Inner join (default join in R )
 
-merge (data1, data2, by= "ID")
+merge(data1, data2, by= "ID")
 
 #left join 
-merge ( data1, data2, by = "ID", all.data)
+merge ( data1, data2, by = "ID", all.x = TRUE)
+merge ( data1, data2, by = "ID", all.y = TRUE) 
 
+#right join m
+merge (data1, data2, all.y = TRUE)
 
+#Outer Join 
+merge(data1, data2 , all = TRUE)
+
+library(tidyverse)
+library(dplyr)
 
