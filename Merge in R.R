@@ -48,5 +48,7 @@ right_join(data1, data2, by= "ID")
 full_join(data1, data2, by ="ID")
 
 semi_join(data1, data2, by = "ID")   # comluns wise naheri rows ma herera filter garchha bhane mathi ko sabaile columns wise farcgga 
-anti_join(data1, data2, by = "ID")
+anti_join(data1, data2, by = "ID")  # left side ko table bata herchha ani commmon value lai ea na bhako lai exclude gardyaa chha only left side table //  value  lyayera rakhna paudaina bhanncha 
+
+
 
