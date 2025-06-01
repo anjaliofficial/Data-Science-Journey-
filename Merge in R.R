@@ -36,3 +36,17 @@ merge(data1, data2 , all = TRUE)
 library(tidyverse)
 library(dplyr)
 
+
+inner_join(data1, data2, by = "ID")  # applying inner_join dplyr function 
+
+left_join(data1, data2, by = "ID")  # Apply left join dplyr function 
+
+right_join(data1, data2, by= "ID")
+
+#for outer join 
+
+full_join(data1, data2, by ="ID")
+
+semi_join(data1, data2, by = "ID")   # comluns wise naheri rows ma herera filter garchha bhane mathi ko sabaile columns wise farcgga 
+anti_join(data1, data2, by = "ID")
+
