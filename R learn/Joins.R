@@ -36,4 +36,22 @@ flights %>%
   group_by(dest) %>% 
 summarise(mean_delay = mean (arr_delay))
 
+# Another way null value na bhako rm bbhaneko remove na bhaneko not available 
+flights %>% 
+  group_by(dest) %>% 
+  summarise(mean_delay=mean(arr_delay, na.rm=TRUE))
 
+flights %>% 
+  group_by(dest) %>% 
+  summarise(mean_delay=mean(arr_delay, na.rm=TRUE)) %>% 
+  filter(mean_delay == min(mean_delay, na.rm = TRUE))
+
+# we dont know thw airline name soo hamile tyo find garn paryo 
+flights %>% 
+  group_by(dest) %>% 
+  summarise(mean_delay=mean(arr_delay, na.rm=TRUE)) %>% 
+  filter(mean_delay==min(mean_delay, na.rm=TRUE)) %>% 
+  left_join(airports,by=c("dest"="faa")) 
+
+
+#Finally we just want the full name of the airport. 
