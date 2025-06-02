@@ -15,3 +15,6 @@ delayed_flights = flights %>%
   summarise(num_delay=n())          
 # count the observations 
 delayed_flights
+
+
+left_join(delayed_flights,airlines,by="carrier") 
