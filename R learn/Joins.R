@@ -25,5 +25,15 @@ flights %>%                             # start with the flights
   group_by(carrier) %>%                 # group by airline (carrier) 
   summarise(num_delay=n()) %>%          # count the observations 
   left_join(airlines,by="carrier") %>%  # join by common key 
-  filter(num_delay==max(num_delay)) %>% # find most delayed 
-  select(name)                          # select the airline 
+  filter(num_delay==max(num_delay)) %>%  # find most delayed 
+  select(name)   # select the airline 
+
+View(flights)
+view(airports)
+
+#Challenge 2.  On average, to which airport do flights arrive most early? 
+flights %>% 
+  group_by(dest) %>% 
+summarise(mean_delay = mean (arr_delay))
+
+
