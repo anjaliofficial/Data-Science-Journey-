@@ -34,3 +34,52 @@ gapminder %>%
   select(-continent,-year) %>% 
   ggplot(aes(x=gdpPercap,y=lifeExp, size=pop)) + 
   geom_point(alpha=0.5) 
+
+
+gapminder %>% 
+  filter(year==1952) %>% 
+  summarise(num_countries=n_distinct(country), 
+            mean_pop=mean(pop)) 
+
+gapminder %>% 
+  group_by(year) %>% 
+  summarise(num_countries=n_distinct(country), 
+            mean_pop=mean(pop)) 
+
+
+gapminder %>% 
+  group_by(year) %>% 
+  summarise(num_countries=n_distinct(country), 
+            mean_pop=mean(pop)) %>% 
+  ggplot(aes(x=year,y=mean_pop)) + 
+  geom_line()
+
+options(scipen=1000)
+
+View(starwars)
+names(starwars)
+
+dim(starwars)
+ncol(starwars)
+
+
+starwars %>%
+  filter(species == "Droid") %>%
+  arrange(desc(mass))
+
+myleague = "E0"
+# Get data from www.football-data.co.uk
+url = paste0("https://www.football-data.co.uk/example.csv")  
+football = read_csv(url)
+View(football)
+
+distinct(football,HomeTeam)
+names(football)
+football %>% 
+  filter(HomeTeam=="Arsenal")
+
+football %>%
+  group_by(HomeTeam) %>%
+  summarise(mean_home_goals = mean(`Full time home goals`, na.rm = TRUE))
+
+
