@@ -30,3 +30,17 @@ for (i in 1:iterations){
   
 }
 
+# plot the cost function curve 
+curve(w^2, from = -6, to = 6, col = "blue", lwd = 2,
+      xlab = "w", ylab = "Cost J (W)", 
+      main = "Gradient Descent Visualization "
+      )
+
+#plot the stpes taken by gradient descent 
+points (w_values, cost_values, col= "red", pch = 19 ) # red dots 
+lines(w_values, cost_values, col = "gray", lty = 2) # dashed lines showing path 
+
+# add legend 
+legend("topright", legend = c("Cost function", "GD steps"),
+       col = c("blue", "red",lty = c(1, NA), pch = c(NA, 19))
+       )
