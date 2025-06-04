@@ -1,48 +1,56 @@
-# ✅ Load built-in mtcars dataset
+# ✅ Load mtcars dataset
 data(mtcars)
 
-# 🧮 Select horsepower (hp) as input and mpg as output
-x <- mtcars$hp  # Feature (independent variable)
-y <- mtcars$mpg # Target (dependent variable)
+# Select variables
+x <- mtcars$hp
+y <- mtcars$mpg
 
-# ⚙️ Initialize model parameters
-w <- 0.01      # Initial weight
-b <- 0         # Initial bias
-lr <- 0.0001   # Learning rate
-n <- length(x) # Number of data points
+# Initialize parameters
+w <- 0.01
+b <- 0
+lr <- 0.0001
+n <- length(x)
 
-# 🔁 Train for 100 iterations (epochs)
-for(i in 1:100){
+# Epoch count
+epochs <- 100
+
+# Store loss per epoch
+loss_history <- numeric(epochs)
+
+# Training loop
+for (i in 1:epochs) {
+  # Prediction
+  y_pred <- w * x + b
   
-  # 🔮 Step 1: Make prediction using current model
-  y_pred <- w * x + b  # Linear model: ŷ = wx + b
-  
-  # 📉 Step 2: Compute Mean Squared Error loss
+  # Loss (MSE)
   loss <- mean((y - y_pred)^2)
+  loss_history[i] <- loss  # Store loss at i-th index
   
-  # 🔗 Step 3: Compute gradients using the chain rule
-  dl_dw <- (-2/n) * sum((y - y_pred) * x)  # Gradient w.r.t. weight
-  dl_db <- (-2/n) * sum(y - y_pred)        # Gradient w.r.t. bias
+  # Gradients using chain rule
+  dl_dw <- (-2/n) * sum((y - y_pred) * x)
+  dl_db <- (-2/n) * sum(y - y_pred)
   
-  # 🔄 Step 4: Update the parameters using the gradients
+  # Update parameters
   w <- w - lr * dl_dw
   b <- b - lr * dl_db
   
-  # 🖨️ Print status every 10 epochs
-  if(i %% 10 == 0){
+  # Print every 10 steps
+  if (i %% 10 == 0) {
     cat("Epoch:", i, "| Loss:", round(loss, 2), "| w:", round(w, 4), "| b:", round(b, 4), "\n")
   }
 }
 
-# plot : actual data and predicted regression line 
-plot(x,y,
-     main = "Linear Regression using gradient descent ", 
-     xlab = "Horsepower (hp)", ylab = "miles per gallon (mpg)",
-     pch = 19, col = "blue" # Blue points: actual data
-     )
+# 📈 Plot 1: Regression line vs actual data
+plot(x, y,
+     main = "Linear Regression using Gradient Descent",
+     xlab = "Horsepower (hp)", ylab = "Miles per Gallon (mpg)",
+     pch = 19, col = "blue")
+abline(a = b, b = w, col = "red", lwd = 2)
+legend("topright", legend = c("Actual Data", "Fitted Line"),
+       col = c("blue", "red"), pch = c(19, NA), lty = c(NA, 1), lwd = c(NA, 2))
 
-#add regreession line 
-abline(a = b, b = w, col = "red", lwd = 2) # red line: predicted line 
-legend  ("topright", legend = c("Actual data", " Fitted line"),
-         col = c("blue", "red"), pch = c(19, NA), lty = c(NA, 1), lwd = c(NA, 2)
-         )
+# 📉 Plot 2: Loss vs Epoch
+plot(1:epochs, loss_history, type = "l",
+     main = "Loss vs Epoch",
+     xlab = "Epoch", ylab = "Mean Squared Error (Loss)",
+     col = "darkgreen", lwd = 2)
