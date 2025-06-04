@@ -33,3 +33,11 @@ for(i in 1:100){
     cat("Epoch:", i, "| Loss:", round(loss, 2), "| w:", round(w, 4), "| b:", round(b, 4), "\n")
   }
 }
+
+# plot : actual data and predicted regression line 
+plot(x,y,
+     main = "Linear Regression using gradient descent ", 
+     xlab = "Horsepower (hp)", ylab = "miles per gallon (mpg)",
+     pch = 19, col = "blue" # Blue points: actual data
+     )
+
