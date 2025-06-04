@@ -41,3 +41,8 @@ plot(x,y,
      pch = 19, col = "blue" # Blue points: actual data
      )
 
+#add regreession line 
+abline(a = b, b = w, col = "red", lwd = 2) # red line: predicted line 
+legend  ("topright", legend = c("Actual data", " Fitted line"),
+         col = c("blue", "red"), pch = c(19, NA), lty = c(NA, 1), lwd = c(NA, 2)
+         )
