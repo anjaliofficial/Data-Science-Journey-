@@ -41,6 +41,14 @@ sb %>%
   mutate(winner=gsub(pattern,"",winner)) %>% 
   mutate(margin=winnerscore-looserscore) %>% 
   
-  
+  ggplot(aes(x = factor(year(date)), y = margin)) +  # Use factor(year(date)) for grouping
+  geom_boxplot(fill = "lightblue") +
+  labs(
+    title = "Winning Margin Over Years",
+    x = "Year",
+    y = "Winning Margin"
+  )
+
+
   
   
