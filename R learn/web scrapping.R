@@ -50,5 +50,14 @@ sb %>%
   )
 
 
+url = "https://en.wikipedia.org/wiki/List_of_fastest-grossing_films"
+page = read_html(url)
+page
+atable= html_nodes(page, 'table')
+a = html_table(sb_table)[[2]]
+a
+
+colnames(a)
+
   
   
