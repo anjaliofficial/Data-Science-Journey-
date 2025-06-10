@@ -18,3 +18,16 @@ library(lubridate) # iut is the package for working with dates and time. it make
  sb = as_tibble(sb)
  sb
  
+ mutate(sb, number=1:nrow(sb))
+ mutate(sb, date = mdy(date))
+ 
+ separate(sb,site,c("stadium", "city", NA), sep = '[()]')
+ separate(sb, result ,c ("winner", "loser"), sep = ',')
+ 
+ pattern = ' \\d+$'
+ separate (sb, result,c("winner", "loser"),sep = ', ' ) %>% 
+   mutate(winnerscore = as.numeric(str_extract(winner, pattern))) %>% 
+   mutate(winner = gsub(pattern , "", winner))
+ 
+ 
+ 
