@@ -59,5 +59,13 @@ a
 
 colnames(a)
 
+
+
+a %>%
+  separate(Date, into = c("Date", "number"), sep = "\\[|\\]", remove = FALSE) %>%
+  mutate(Date = mdy(Date))
+View(a)
+
+
   
   
