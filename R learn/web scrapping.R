@@ -29,5 +29,18 @@ library(lubridate) # iut is the package for working with dates and time. it make
    mutate(winnerscore = as.numeric(str_extract(winner, pattern))) %>% 
    mutate(winner = gsub(pattern , "", winner))
  
- 
- 
+ #pipe 
+ pattern = ' \\d+$'
+sb %>%  
+  mutate(number = 1:nrow(sb)) %>% 
+  mutate(date=mdy(date)) %>% 
+  separate(site,c("stadium","city",NA),sep='[()]') %>%
+  separate(result,c("winner","loser"),sep=', ') %>%
+  mutate(winnerscore=as.numeric(str_extract(winner,pattern))) %>%
+  mutate(looserscore=as.numeric(str_extract(loser,pattern))) %>%
+  mutate(winner=gsub(pattern,"",winner)) %>% 
+  mutate(margin=winnerscore-looserscore) %>% 
+  
+  
+  
+  
