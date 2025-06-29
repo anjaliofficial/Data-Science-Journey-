@@ -2,25 +2,45 @@
 title: "R_Markdown"
 output: html_document
 date: "2025-06-29"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+\`\`\`{r setup, include=FALSE} knitr::opts_chunk\$set(echo = TRUE)
 
-```{r cars}
-summary(cars)
-```## My Own Code Example
+`{r cars} summary(cars)`\## My Own Code Example
 
 #Here is a custom example using the built-in `mtcars` dataset:
 
-```{r my-analysis}
-# Basic statistics of the mtcars dataset
+\`\`\`{r my-analysis} \# Basic statistics of the mtcars dataset
 summary(mtcars)
 
 # Plotting mpg vs hp
-plot(mtcars$hp, mtcars$mpg,
-     main = "MPG vs Horsepower",
-     xlab = "Horsepower",
-     ylab = "Miles Per Gallon",
-     col = "blue",
-     pch = 19)
+
+plot(mtcars$hp, mtcars$mpg, main = "MPG vs Horsepower", xlab =
+"Horsepower", ylab = "Miles Per Gallon", col = "blue", pch = 19)
+
+
+
+
+
+
+#-----------------------sir ko code
+## Analysis of 'mpg Dataset
+
+```{r}
+# Load required library
+library(tidyverse)
+
+# Inspect dataset to ensure it's available
+head(mpg)
+
+# Scatter plot
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  labs(
+    title = "Engine Displacement vs Highway MPG",
+    x = "Engine Displacement",
+    y = "Highway MPG"
+  )
