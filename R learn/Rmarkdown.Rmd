@@ -1,0 +1,26 @@
+---
+title: "R_Markdown"
+output: html_document
+date: "2025-06-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```{r cars}
+summary(cars)
+```## My Own Code Example
+
+#Here is a custom example using the built-in `mtcars` dataset:
+
+```{r my-analysis}
+# Basic statistics of the mtcars dataset
+summary(mtcars)
+
+# Plotting mpg vs hp
+plot(mtcars$hp, mtcars$mpg,
+     main = "MPG vs Horsepower",
+     xlab = "Horsepower",
+     ylab = "Miles Per Gallon",
+     col = "blue",
+     pch = 19)
