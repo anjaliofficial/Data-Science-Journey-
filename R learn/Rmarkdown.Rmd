@@ -44,3 +44,13 @@ ggplot(data = mpg) +
     x = "Engine Displacement",
     y = "Highway MPG"
   )
+
+
+
+
+
+
+
+
+#2. Creating a notebook using Jupyter 
+
