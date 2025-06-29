@@ -1,6 +1,9 @@
-#Hypothesis testin g
-library(tidyverse)
-state = as_tibble(state.x77)
-summary(state)
-ggplot(state, aes(x = Murder))+
-  geom_boxplot()
+
+#1. Regression Models with Two Quantitative Predictor Variables 
+#install.packages("ISLR")    
+# run only once 
+library(tidyverse) 
+library(ISLR) 
+credit = as_tibble(Credit) 
+credit = select(credit,Balance,Limit,Income) 
+summary(credit)
